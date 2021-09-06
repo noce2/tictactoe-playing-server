@@ -55,3 +55,14 @@ test("Http trigger should send back same board if x wins", async () => {
   expect(context.res.status).toBe(200);
   expect(context.res.body).toBe(`${request.query.board}`);
 });
+
+test("Http trigger should send winning move if server can win", async () => {
+  const request = {
+    query: { board: "oo++++xx+".replace(/\+/g, " ") },
+  };
+
+  await httpFunction(context, request);
+
+  expect(context.res.status).toBe(200);
+  expect(context.res.body).toBe(`${"ooo+++xx+".replace(/\+/g, " ")}`);
+});

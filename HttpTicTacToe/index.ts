@@ -1,5 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { BoardValidationError, validateBoard } from "./boardValidation";
+import { getServerMove } from "./strategy";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -8,6 +9,13 @@ const httpTrigger: AzureFunction = async function (
   context.log("HTTP trigger function processed a request.");
   try {
     const receivedBoard = validateBoard(req.query.board);
+
+    const nextMove = getServerMove(receivedBoard);
+
+    if (nextMove) {
+      receivedBoard.playServerMove(nextMove);
+    }
+
     const responseMessage = receivedBoard.board;
 
     context.res = {

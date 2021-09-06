@@ -1,8 +1,8 @@
 export class Board {
   playerSymbol = "x";
-  private _playerMoves: Set<MovePosition> = new Set();
+  playerMoves: Set<MovePosition> = new Set();
   serverSymbol = "o";
-  private _serverMoves: Set<MovePosition> = new Set();
+  serverMoves: Set<MovePosition> = new Set();
   private _board: string[] = [];
 
   constructor(boardString) {
@@ -11,10 +11,10 @@ export class Board {
 
       switch (symbol) {
         case this.playerSymbol:
-          this._playerMoves.add(index);
+          this.playerMoves.add(index);
           break;
         case this.serverSymbol:
-          this._serverMoves.add(index);
+          this.serverMoves.add(index);
           break;
         default:
           break;
@@ -23,16 +23,20 @@ export class Board {
   }
 
   public get playerTurns() {
-    return this._playerMoves.size;
+    return this.playerMoves.size;
   }
 
   public get serverTurns() {
-    return this._serverMoves.size;
+    return this.serverMoves.size;
   }
 
   public playServerMove(index: MovePosition) {
-    this._serverMoves.add(index);
-    this.board[index] = this.serverSymbol;
+    if (this.board[index] === " ") {
+      this.serverMoves.add(index);
+      this.board[index] = this.serverSymbol;
+    } else {
+      throw new Error("Box already filled.");
+    }
   }
 
   public get board(): string[] {
