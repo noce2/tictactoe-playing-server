@@ -1,0 +1,23 @@
+{
+  "name": "wave-assessment-one",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "func start",
+    "test": "jest"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@azure/functions": "^1.2.3",
+    "@types/jest": "^27.0.1",
+    "jest": "^27.1.0",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.2"
+  },
+  "engines": {
+    "node": "^12.0.0"
+  }
+}
