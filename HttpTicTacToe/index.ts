@@ -11,7 +11,7 @@ const httpTrigger: AzureFunction = async function (
     const responseMessage = receivedBoard.board;
 
     context.res = {
-      // status: 200, /* Defaults to 200 */
+      status: 200 /* Defaults to 200 */,
       body: responseMessage.map((each) => (each === "+" ? " " : each)).join(""),
     };
   } catch (err) {

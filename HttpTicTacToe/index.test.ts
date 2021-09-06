@@ -8,6 +8,7 @@ test("Http trigger should process a valid board", async () => {
 
   await httpFunction(context, request);
 
+  expect(context.res.status).toBe(200);
   expect(context.res.body).toContain(
     `${request.query.board.replace(/\+/g, " ")}`
   );
@@ -44,4 +45,15 @@ test("Http trigger should send bad request if it is not server's turn", async ()
 
   expect(context.res.status).toBe(400);
   expect(context.res.body).toContain("Not server's turn");
+});
+
+test("Http trigger should send back same board if x wins", async () => {
+  const request = {
+    query: { board: "xxxo+++o+" },
+  };
+
+  await httpFunction(context, request);
+
+  expect(context.res.status).toBe(200);
+  expect(context.res.body).toBe(`${request.query.board.replace(/\+/g, " ")}`);
 });
