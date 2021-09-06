@@ -12,7 +12,7 @@ const httpTrigger: AzureFunction = async function (
 
     context.res = {
       status: 200 /* Defaults to 200 */,
-      body: responseMessage.map((each) => (each === "+" ? " " : each)).join(""),
+      body: responseMessage.join(""),
     };
   } catch (err) {
     if (err instanceof BoardValidationError) {

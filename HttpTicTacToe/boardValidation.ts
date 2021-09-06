@@ -5,7 +5,7 @@ export function validateBoard(receivedBoardString: string): Board {
     throw new BoardValidationError("Invalid board length");
   }
 
-  if (/[^ox\+]/.test(receivedBoardString)) {
+  if (/[^ox\s]/.test(receivedBoardString)) {
     throw new BoardValidationError("Invalid character in board");
   }
 
