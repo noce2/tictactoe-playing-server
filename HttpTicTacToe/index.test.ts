@@ -22,4 +22,16 @@ test("Http trigger should send bad request if board has too few chars", async ()
   await httpFunction(context, request);
 
   expect(context.res.status).toBe(400);
+  expect(context.res.body).toContain("Invalid board length");
+});
+
+test("Http trigger should send bad request if board chars outside expected", async () => {
+  const request = {
+    query: { board: "+xxoR++o+" },
+  };
+
+  await httpFunction(context, request);
+
+  expect(context.res.status).toBe(400);
+  expect(context.res.body).toContain("Invalid character in board");
 });
