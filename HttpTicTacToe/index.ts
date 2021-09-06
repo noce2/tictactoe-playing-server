@@ -8,7 +8,7 @@ const httpTrigger: AzureFunction = async function (
   context.log("HTTP trigger function processed a request.");
   try {
     const receivedBoard = validateBoard(req.query.board);
-    const responseMessage = receivedBoard.split("");
+    const responseMessage = receivedBoard.board;
 
     context.res = {
       // status: 200, /* Defaults to 200 */
