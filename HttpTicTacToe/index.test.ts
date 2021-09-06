@@ -1,7 +1,7 @@
 import httpFunction from "./index";
 import context from "../tests/defaultContext";
 
-test("Http trigger should return known text", async () => {
+test("Http trigger should process a valid board", async () => {
   const request = {
     query: { board: "+xxo++o++" },
   };
@@ -12,4 +12,14 @@ test("Http trigger should return known text", async () => {
   expect(context.res.body).toContain(
     `${request.query.board.replace(/\+/g, " ")}`
   );
+});
+
+test("Http trigger should send bad request if board has too few chars", async () => {
+  const request = {
+    query: { board: "+xxo++o+" },
+  };
+
+  await httpFunction(context, request);
+
+  expect(context.res.status).toBe(400);
 });
