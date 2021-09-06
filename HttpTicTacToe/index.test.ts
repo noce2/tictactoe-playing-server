@@ -9,7 +9,7 @@ test("Http trigger should process a valid board", async () => {
   await httpFunction(context, request);
 
   expect(context.res.status).toBe(200);
-  expect(context.res.body).toContain(`${request.query.board}`);
+  expect(context.res.body).not.toMatch(/[^xo\s]/);
 });
 
 test("Http trigger should send bad request if board has too few chars", async () => {
