@@ -1,8 +1,8 @@
 export class Board {
   playerSymbol = "x";
-  private _playerTurns = 0;
+  private _playerMoves: Set<MovePosition> = new Set();
   serverSymbol = "o";
-  private _serverTurns = 0;
+  private _serverMoves: Set<MovePosition> = new Set();
   private _board: string[] = [];
 
   constructor(boardString) {
@@ -11,10 +11,10 @@ export class Board {
 
       switch (symbol) {
         case this.playerSymbol:
-          this.playerTurns++;
+          this._playerMoves.add(index);
           break;
         case this.serverSymbol:
-          this.serverTurns++;
+          this._serverMoves.add(index);
           break;
         default:
           break;
@@ -23,21 +23,15 @@ export class Board {
   }
 
   public get playerTurns() {
-    return this._playerTurns;
-  }
-  private set playerTurns(value) {
-    this._playerTurns = value;
+    return this._playerMoves.size;
   }
 
   public get serverTurns() {
-    return this._serverTurns;
-  }
-  private set serverTurns(value) {
-    this._serverTurns = value;
+    return this._serverMoves.size;
   }
 
-  public playServerMove(index: number) {
-    this._serverTurns++;
+  public playServerMove(index: MovePosition) {
+    this._serverMoves.add(index);
     this.board[index] = this.serverSymbol;
   }
 
@@ -45,3 +39,5 @@ export class Board {
     return this._board;
   }
 }
+
+export type MovePosition = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
