@@ -5,10 +5,19 @@ export function getServerMove(board: Board): MovePosition | null {
   if (hasPlayerWon(board)) {
     return null;
   }
-  const winningNextMove = canServerWin(board);
 
-  if (winningNextMove.boolean) {
-    return winningNextMove.move;
+  // 1. Attempt to win first
+  const serversWinningNextMove = canEntityWin(board, "server");
+
+  if (serversWinningNextMove.boolean) {
+    return serversWinningNextMove.move;
+  }
+
+  // 2. Attempt to block players winning move
+  const playersWinningNextMove = canEntityWin(board, "player");
+
+  if (playersWinningNextMove.boolean) {
+    return playersWinningNextMove.move;
   }
 
   const performedMoves = new Set([...board.playerMoves, ...board.serverMoves]);
@@ -21,13 +30,13 @@ export function getServerMove(board: Board): MovePosition | null {
   return randomMove;
 }
 
-function canServerWin(board: Board): {
-  boolean: boolean;
-  move: MovePosition | null;
-} {
-  const alreadyMadeMoves = Array.from(board.serverMoves);
+function canEntityWin(board: Board, entity: "player" | "server") {
+  const movesToConsider =
+    entity === "player" ? board.playerMoves : board.serverMoves;
 
-  if (board.serverMoves.size !== 2) {
+  const alreadyMadeMoves = Array.from(movesToConsider);
+
+  if (movesToConsider.size !== 2) {
     return { boolean: false, move: null };
   } else {
     const winningMove: number | undefined =

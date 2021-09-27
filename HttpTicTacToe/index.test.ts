@@ -1,7 +1,7 @@
 import httpFunction from "./index";
 import context from "../tests/defaultContext";
 
-test("Http trigger should process a valid board", async () => {
+test("should process a valid board", async () => {
   const request = {
     query: { board: "+xxo++o++".replace(/\+/g, " ") },
   };
@@ -12,7 +12,7 @@ test("Http trigger should process a valid board", async () => {
   expect(context!.res!.body).not.toMatch(/[^xo\s]/);
 });
 
-test("Http trigger should send bad request if board has too few chars", async () => {
+test("should send bad request if board has too few chars", async () => {
   const request = {
     query: { board: "+xxo++o+".replace(/\+/g, " ") },
   };
@@ -23,7 +23,7 @@ test("Http trigger should send bad request if board has too few chars", async ()
   expect(context!.res!.body).toContain("Invalid board length");
 });
 
-test("Http trigger should send bad request if board chars outside expected", async () => {
+test("should send bad request if board chars outside expected", async () => {
   const request = {
     query: { board: "+xxoR++o+".replace(/\+/g, " ") },
   };
@@ -34,7 +34,7 @@ test("Http trigger should send bad request if board chars outside expected", asy
   expect(context!.res!.body).toContain("Invalid character in board");
 });
 
-test("Http trigger should send bad request if it is not server's turn", async () => {
+test("should send bad request if it is not server's turn", async () => {
   const request = {
     query: { board: "+x+o+++o+".replace(/\+/g, " ") },
   };
@@ -45,7 +45,7 @@ test("Http trigger should send bad request if it is not server's turn", async ()
   expect(context!.res!.body).toContain("Not server's turn");
 });
 
-test("Http trigger should send back same board if x wins", async () => {
+test("should send back same board if x wins", async () => {
   const request = {
     query: { board: "xxxo+++o+".replace(/\+/g, " ") },
   };
@@ -63,7 +63,27 @@ it.each([
   ["+o++o+x+x", "+o++o+xox"],
   ["++o++oxx+", "++o++oxxo"],
 ])(
-  "Http trigger should send winning move if server can win %s",
+  "should send winning move if server can win %s as %s",
+  async (input, expected) => {
+    const request = {
+      query: { board: input.replace(/\+/g, " ") },
+    };
+
+    await httpFunction(context, request);
+
+    expect(context!.res!.status).toBe(200);
+    expect(context!.res!.body).toBe(`${expected.replace(/\+/g, " ")}`);
+  }
+);
+
+it.each([
+  ["o+++++xx+", "o+++++xxo"],
+  ["x++x+++o+", "x++x++oo+"],
+  ["x+x++++o+", "xox++++o+"],
+  ["x+++x++o+", "x+++x++oo"],
+  ["+x++x+++o", "+x++x++oo"],
+])(
+  "Given player had first move, should block player's winning move in %s as %s",
   async (input, expected) => {
     const request = {
       query: { board: input.replace(/\+/g, " ") },
