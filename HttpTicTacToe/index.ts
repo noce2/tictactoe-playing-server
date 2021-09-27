@@ -8,11 +8,19 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   context.log("HTTP trigger function processed a request.");
   try {
+    if (!req.query?.board) {
+      context.res = {
+        status: 400,
+        body: "no board sent",
+      };
+      return;
+    }
+
     const receivedBoard = validateBoard(req.query.board);
 
     const nextMove = getServerMove(receivedBoard);
 
-    if (nextMove) {
+    if (!(nextMove === null)) {
       receivedBoard.playServerMove(nextMove);
     }
 

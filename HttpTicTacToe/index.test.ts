@@ -8,8 +8,8 @@ test("Http trigger should process a valid board", async () => {
 
   await httpFunction(context, request);
 
-  expect(context.res.status).toBe(200);
-  expect(context.res.body).not.toMatch(/[^xo\s]/);
+  expect(context!.res!.status).toBe(200);
+  expect(context!.res!.body).not.toMatch(/[^xo\s]/);
 });
 
 test("Http trigger should send bad request if board has too few chars", async () => {
@@ -19,8 +19,8 @@ test("Http trigger should send bad request if board has too few chars", async ()
 
   await httpFunction(context, request);
 
-  expect(context.res.status).toBe(400);
-  expect(context.res.body).toContain("Invalid board length");
+  expect(context!.res!.status).toBe(400);
+  expect(context!.res!.body).toContain("Invalid board length");
 });
 
 test("Http trigger should send bad request if board chars outside expected", async () => {
@@ -30,8 +30,8 @@ test("Http trigger should send bad request if board chars outside expected", asy
 
   await httpFunction(context, request);
 
-  expect(context.res.status).toBe(400);
-  expect(context.res.body).toContain("Invalid character in board");
+  expect(context!.res!.status).toBe(400);
+  expect(context!.res!.body).toContain("Invalid character in board");
 });
 
 test("Http trigger should send bad request if it is not server's turn", async () => {
@@ -41,8 +41,8 @@ test("Http trigger should send bad request if it is not server's turn", async ()
 
   await httpFunction(context, request);
 
-  expect(context.res.status).toBe(400);
-  expect(context.res.body).toContain("Not server's turn");
+  expect(context!.res!.status).toBe(400);
+  expect(context!.res!.body).toContain("Not server's turn");
 });
 
 test("Http trigger should send back same board if x wins", async () => {
@@ -52,13 +52,16 @@ test("Http trigger should send back same board if x wins", async () => {
 
   await httpFunction(context, request);
 
-  expect(context.res.status).toBe(200);
-  expect(context.res.body).toBe(`${request.query.board}`);
+  expect(context!.res!.status).toBe(200);
+  expect(context!.res!.body).toBe(`${request.query.board}`);
 });
 
 it.each([
   ["oo++++xx+", "ooo+++xx+"],
   ["o++o+++xx", "o++o++oxx"],
+  ["+++o++oxx", "o++o++oxx"],
+  ["+o++o+x+x", "+o++o+xox"],
+  ["++o++oxx+", "++o++oxxo"],
 ])(
   "Http trigger should send winning move if server can win %s",
   async (input, expected) => {
@@ -68,7 +71,7 @@ it.each([
 
     await httpFunction(context, request);
 
-    expect(context.res.status).toBe(200);
-    expect(context.res.body).toBe(`${expected.replace(/\+/g, " ")}`);
+    expect(context!.res!.status).toBe(200);
+    expect(context!.res!.body).toBe(`${expected.replace(/\+/g, " ")}`);
   }
 );
