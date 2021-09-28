@@ -76,6 +76,30 @@ it.each([
   }
 );
 
+it.each([["ox++x+++o"]])(
+  "should not attempt winning move if move position is taken %s",
+  async (input) => {
+    const request = {
+      query: { board: input.replace(/\+/g, " ") },
+    };
+
+    const previousNumberOfServerMoves = [...request.query.board.matchAll(/o/g)]
+      .length;
+
+    await httpFunction(context, request);
+
+    expect(context!.res!.status).toBe(200);
+
+    const currentNumberOfServerMoves = [
+      ...(context!.res!.body as string).matchAll(/o/g),
+    ].length;
+
+    expect(currentNumberOfServerMoves).toBeGreaterThan(
+      previousNumberOfServerMoves
+    );
+  }
+);
+
 it.each([
   ["o+++++xx+", "o+++++xxo"],
   ["x++x+++o+", "x++x++oo+"],
@@ -84,6 +108,26 @@ it.each([
   ["+x++x+++o", "+x++x++oo"],
 ])(
   "Given player had first move, should block player's winning move in %s as %s",
+  async (input, expected) => {
+    const request = {
+      query: { board: input.replace(/\+/g, " ") },
+    };
+
+    await httpFunction(context, request);
+
+    expect(context!.res!.status).toBe(200);
+    expect(context!.res!.body).toBe(`${expected.replace(/\+/g, " ")}`);
+  }
+);
+
+it.each([
+  ["o++++oxx+", "o++++oxxo"],
+  ["x+ox+++o+", "x+ox++oo+"],
+  ["x+x++o+o+", "xox++o+o+"],
+  ["x+o+x++o+", "x+o+x++oo"],
+  ["ox++x+++o", "ox++x++oo"],
+])(
+  "Given server had first move but can't win, should block player's winning move in %s as %s",
   async (input, expected) => {
     const request = {
       query: { board: input.replace(/\+/g, " ") },

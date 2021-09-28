@@ -31,12 +31,20 @@ export class Board {
   }
 
   public playServerMove(index: MovePosition) {
-    if (this.board[index] === " ") {
+    if (this.canMoveBeMade(index)) {
       this.serverMoves.add(index);
       this.board[index] = this.serverSymbol;
     } else {
       throw new Error("Box already filled.");
     }
+  }
+
+  public canMoveBeMade(index: MovePosition) {
+    if (this.board[index] === " ") {
+      return true;
+    }
+
+    return false;
   }
 
   public get board(): string[] {

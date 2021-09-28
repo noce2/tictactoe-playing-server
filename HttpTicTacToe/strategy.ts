@@ -20,14 +20,8 @@ export function getServerMove(board: Board): MovePosition | null {
     return playersWinningNextMove.move;
   }
 
-  const performedMoves = new Set([...board.playerMoves, ...board.serverMoves]);
-  const possibleMovesLeft = (
-    [0, 1, 2, 3, 4, 5, 6, 7, 8] as MovePosition[]
-  ).filter((each) => !performedMoves.has(each));
-
-  const randomMove =
-    possibleMovesLeft[Math.floor(Math.random() * possibleMovesLeft.length)];
-  return randomMove;
+  // Try anything as a fallback
+  return nextRandomMove(board);
 }
 
 function canEntityWin(board: Board, entity: "player" | "server") {
@@ -39,10 +33,13 @@ function canEntityWin(board: Board, entity: "player" | "server") {
   if (movesToConsider.size !== 2) {
     return { boolean: false, move: null };
   } else {
-    const winningMove: number | undefined =
+    const possibleWinningMove =
       winningCombinations[alreadyMadeMoves[0]]?.[alreadyMadeMoves[1]];
-    if (winningMove !== undefined) {
-      return { boolean: true, move: winningMove as MovePosition };
+    if (
+      possibleWinningMove !== undefined &&
+      board.canMoveBeMade(possibleWinningMove)
+    ) {
+      return { boolean: true, move: possibleWinningMove };
     } else {
       return { boolean: false, move: null };
     }
@@ -64,4 +61,15 @@ function hasPlayerWon(board: Board): boolean {
       return false;
     }
   }
+}
+
+function nextRandomMove(board): MovePosition {
+  const performedMoves = new Set([...board.playerMoves, ...board.serverMoves]);
+  const possibleMovesLeft = (
+    [0, 1, 2, 3, 4, 5, 6, 7, 8] as MovePosition[]
+  ).filter((each) => !performedMoves.has(each));
+
+  const randomMove =
+    possibleMovesLeft[Math.floor(Math.random() * possibleMovesLeft.length)];
+  return randomMove;
 }
