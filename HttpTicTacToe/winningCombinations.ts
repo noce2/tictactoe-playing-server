@@ -1,3 +1,9 @@
+import { MovePosition } from "./board.model";
+
+type MovePositionTrie = Readonly<
+  Record<MovePosition, Record<MovePosition, MovePosition>>
+>;
+
 export const winningCombinations = Object.freeze({
   0: {
     1: 2,
@@ -65,4 +71,4 @@ export const winningCombinations = Object.freeze({
     6: 7,
     7: 6,
   },
-});
+}) as MovePositionTrie;
