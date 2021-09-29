@@ -13,6 +13,11 @@ export function validateBoard(receivedBoardString: string): Board {
 
   if (boardToReturn.playerTurns < boardToReturn.serverTurns) {
     throw new BoardValidationError("Not server's turn");
+  } else if (
+    boardToReturn.playerTurns + boardToReturn.serverTurns ===
+    receivedBoardString.length
+  ) {
+    throw new BoardValidationError("Board is full");
   }
   return boardToReturn;
 }

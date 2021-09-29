@@ -1,6 +1,10 @@
 import httpFunction from "./index";
 import context from "../tests/defaultContext";
 
+beforeEach(() => {
+  context.res = {};
+});
+
 test("should process a valid board", async () => {
   const request = {
     query: { board: "+xxo++o++".replace(/\+/g, " ") },
@@ -43,6 +47,17 @@ test("should send bad request if it is not server's turn", async () => {
 
   expect(context!.res!.status).toBe(400);
   expect(context!.res!.body).toContain("Not server's turn");
+});
+
+test("should send bad request if board is full", async () => {
+  const request = {
+    query: { board: "xxooxoxox".replace(/\+/g, " ") },
+  };
+
+  await httpFunction(context, request);
+
+  expect(context!.res!.status).toBe(400);
+  expect(context!.res!.body).toContain("Board is full");
 });
 
 test("should send back same board if x wins", async () => {
@@ -94,6 +109,7 @@ it.each([["ox++x+++o"]])(
       ...(context!.res!.body as string).matchAll(/o/g),
     ].length;
 
+    // Assert some move has been made.
     expect(currentNumberOfServerMoves).toBeGreaterThan(
       previousNumberOfServerMoves
     );
