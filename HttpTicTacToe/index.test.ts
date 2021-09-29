@@ -155,3 +155,14 @@ it.each([
     expect(context!.res!.body).toBe(`${expected.replace(/\+/g, " ")}`);
   }
 );
+
+test("should play in center if board is empty", async () => {
+  const request = {
+    query: { board: "+++++++++".replace(/\+/g, " ") },
+  };
+
+  await httpFunction(context, request);
+
+  expect(context!.res!.status).toBe(200);
+  expect(context!.res!.body).toBe(`${"++++o++++".replace(/\+/g, " ")}`);
+});

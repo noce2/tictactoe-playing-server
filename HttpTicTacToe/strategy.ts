@@ -6,6 +6,11 @@ export function getServerMove(board: Board): MovePosition | null {
     return null;
   }
 
+  /**
+   * Strategy coming from:
+   * https://en.wikipedia.org/wiki/Tic-tac-toe#Strategy
+   */
+
   // 1. Attempt to win first
   const serversWinningNextMove = canEntityWin(board, "server");
 
@@ -18,6 +23,11 @@ export function getServerMove(board: Board): MovePosition | null {
 
   if (playersWinningNextMove.boolean) {
     return playersWinningNextMove.move;
+  }
+
+  // 5. Center
+  if (board.canMoveBeMade(4)) {
+    return 4;
   }
 
   // Try anything as a fallback
