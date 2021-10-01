@@ -166,3 +166,21 @@ test("should play in center if board is empty", async () => {
   expect(context!.res!.status).toBe(200);
   expect(context!.res!.body).toBe(`${"++++o++++".replace(/\+/g, " ")}`);
 });
+
+describe("Forking Behaviour", () => {
+  it.each([["++xxo+o++", ["++xxo+o+o", "++xxo+oo+"]]])(
+    "Given a fork can be made by server in %s, it should exploit it",
+    async (input, possibles) => {
+      const request = {
+        query: { board: input.replace(/\+/g, " ") },
+      };
+
+      await httpFunction(context, request);
+
+      expect(context!.res!.status).toBe(200);
+      expect((context!.res!.body as string).replace(/\s/g, "+")).toBeOneOf(
+        possibles
+      );
+    }
+  );
+});
