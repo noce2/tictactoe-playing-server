@@ -165,11 +165,14 @@ describe("Strategy: Block player (x) winning", () => {
 
 describe("Strategy: Server (o) makes fork", () => {
   it.each([
-    ["++xxo+o++", ["++xxo+o+o", "++xxo+oo+"]],
-    ["x+++o++xo", ["x+o+o++xo", "x+++oo+xo"]], // this is the top case rotated by 90 degrees anti-clockwise
-    ["++o+oxx++", ["o+o+oxx++", "+oo+oxx++"]], // this is the top case rotated by 180 degrees anti-clockwise
-    ["ox++o+++x", ["ox++o+o+x", "ox+oo+++x"]], // this is the top case rotated by 270 degrees anti-clockwise
-    ["x+o+x+o++", ["x+o+x+o+o"]],
+    ["++xxo+o++", ["++xxo+o+o", "++xxo+oo+"]], // CASE A
+    ["x+++o++xo", ["x+o+o++xo", "x+++oo+xo"]], // this is the CASE A rotated by 90 degrees anti-clockwise
+    ["++o+oxx++", ["o+o+oxx++", "+oo+oxx++"]], // this is the CASE A rotated by 180 degrees anti-clockwise
+    ["ox++o+++x", ["ox++o+o+x", "ox+oo+++x"]], // this is the CASE A rotated by 270 degrees anti-clockwise
+    ["x+o+x+o++", ["x+o+x+o+o"]], // CASE B
+    ["o+++x+x+o", ["o+o+x+x+o"]], // this is the CASE B rotated by 90 degrees anti-clockwise
+    ["++o+x+o+x", ["o+o+x+o+x"]], // this is the CASE B rotated by 180 degrees anti-clockwise
+    ["o+x+x+++o", ["o+x+x+o+o"]], // this is the CASE B rotated by 270 degrees anti-clockwise
   ])(
     "Given a fork can be made by server in %s, it should exploit it",
     async (input, possibles) => {
