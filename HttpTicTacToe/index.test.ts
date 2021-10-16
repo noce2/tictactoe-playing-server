@@ -209,12 +209,6 @@ describe("Strategy: Block player's (x) fork", () => {
       expect((context!.res!.body as string).replace(/\s/g, "+")).toBeOneOf(
         possibles
       );
-
-      expect((context!.res!.body as string).replace(/\s/g, "+")).toBe(
-        "possibles[0]"
-      );
-
-      throw new Error("Test failed");
     }
   );
 });
