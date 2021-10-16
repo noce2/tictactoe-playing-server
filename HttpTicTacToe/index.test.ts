@@ -190,6 +190,35 @@ describe("Strategy: Server (o) makes fork", () => {
   );
 });
 
+describe("Strategy: Block player's (x) fork", () => {
+  it.each([
+    ["o+x+o+x++", ["o+x+o+x+o"]], // CASE A
+    ["x+++o+o+x", ["x+o+o+o+x"]], // this is the CASE A rotated by 90 degrees anti-clockwise
+    ["++x+o+x+o", ["o+x+o+x+o"]], // this is the CASE A rotated by 180 degrees anti-clockwise
+    ["x+o+o+++x", ["x+o+o+o+x"]], // this is the CASE A rotated by 270 degrees anti-clockwise
+  ])(
+    "Given one possible fork by player in %s, server should block it",
+    async (input, possibles) => {
+      const request = {
+        query: { board: input.replace(/\+/g, " ") },
+      };
+
+      await httpFunction(context, request);
+
+      expect(context!.res!.status).toBe(200);
+      expect((context!.res!.body as string).replace(/\s/g, "+")).toBeOneOf(
+        possibles
+      );
+
+      expect((context!.res!.body as string).replace(/\s/g, "+")).toBe(
+        "possibles[0]"
+      );
+
+      throw new Error("Test failed");
+    }
+  );
+});
+
 describe("Strategy: Server (o) picks center", () => {
   test("should play in center if board is empty", async () => {
     const request = {
