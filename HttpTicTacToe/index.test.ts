@@ -168,7 +168,11 @@ test("should play in center if board is empty", async () => {
 });
 
 describe("Forking Behaviour", () => {
-  it.each([["++xxo+o++", ["++xxo+o+o", "++xxo+oo+"]]])(
+  it.each([
+    ["++xxo+o++", ["++xxo+o+o", "++xxo+oo+"]],
+    ["x+o+x+o++", ["x+o+x+o+o"]],
+    ["++o+oxx++", ["o+o+oxx++", "+oo+oxx++"]], // this is a mirror of the top case
+  ])(
     "Given a fork can be made by server in %s, it should exploit it",
     async (input, possibles) => {
       const request = {
