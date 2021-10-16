@@ -23,4 +23,11 @@ The server implements the optimal play algorithm from [Wikipedia](https://en.wik
 
 ## Testing
 
+### Local
+
+1. `npm start`
+2. `curl http://localhost:7071/api/HttpTicTacToe?board=x++++++++`
+
+### Deployed
+
 `curl https://noce2-tictactoe-api.azurewebsites.net/api/HttpTicTacToe?board=x++++++++`
