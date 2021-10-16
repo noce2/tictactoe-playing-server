@@ -151,32 +151,36 @@ function createHistogramOfWinningMovesRemainingForPlayer(
         ) as MovePosition;
         if (
           board.canMoveBeMade(secondEntryInWinningComboTrieAsMovePosition) &&
-          result.get(secondEntryInWinningComboTrieAsMovePosition) === undefined
+          board.canMoveBeMade(thirdEntryInWinningComboTrie as MovePosition)
         ) {
-          result.set(secondEntryInWinningComboTrieAsMovePosition, 1);
-        } else if (
-          board.canMoveBeMade(secondEntryInWinningComboTrieAsMovePosition) &&
-          result.get(secondEntryInWinningComboTrieAsMovePosition) !== undefined
-        ) {
-          result.set(
-            secondEntryInWinningComboTrieAsMovePosition,
-            result.get(secondEntryInWinningComboTrieAsMovePosition)! + 1
-          );
-        }
-
-        if (
-          board.canMoveBeMade(thirdEntryInWinningComboTrie as MovePosition) &&
-          result.get(thirdEntryInWinningComboTrie as MovePosition) === undefined
-        ) {
-          result.set(thirdEntryInWinningComboTrie as MovePosition, 1);
-        } else if (
-          board.canMoveBeMade(thirdEntryInWinningComboTrie as MovePosition) &&
-          result.get(thirdEntryInWinningComboTrie as MovePosition) !== undefined
-        ) {
-          result.set(
-            thirdEntryInWinningComboTrie as MovePosition,
-            result.get(thirdEntryInWinningComboTrie as MovePosition)! + 1
-          );
+          if (
+            result.get(secondEntryInWinningComboTrieAsMovePosition) ===
+            undefined
+          ) {
+            result.set(secondEntryInWinningComboTrieAsMovePosition, 1);
+          } else if (
+            result.get(secondEntryInWinningComboTrieAsMovePosition) !==
+            undefined
+          ) {
+            result.set(
+              secondEntryInWinningComboTrieAsMovePosition,
+              result.get(secondEntryInWinningComboTrieAsMovePosition)! + 1
+            );
+          }
+          if (
+            result.get(thirdEntryInWinningComboTrie as MovePosition) ===
+            undefined
+          ) {
+            result.set(thirdEntryInWinningComboTrie as MovePosition, 1);
+          } else if (
+            result.get(thirdEntryInWinningComboTrie as MovePosition) !==
+            undefined
+          ) {
+            result.set(
+              thirdEntryInWinningComboTrie as MovePosition,
+              result.get(thirdEntryInWinningComboTrie as MovePosition)! + 1
+            );
+          }
         }
       }
     );
