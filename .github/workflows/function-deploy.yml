@@ -60,7 +60,7 @@ jobs:
 
       - name: "Resolve Frontend Project Dependencies Using Npm"
         shell: bash
-        working-directory: "./frontend"
+        working-directory: "./frontend/my-app"
         run: |
           npm install
           npm run test
@@ -71,7 +71,7 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            cd ./frontend/build
+            cd ./frontend/my-app/build
             az storage blob upload-batch --account-name ${{ steps.infradeploy.outputs.spaStorageAccountName }}  --auth-mode key -d '$web' -s .
 
       # Azure logout
