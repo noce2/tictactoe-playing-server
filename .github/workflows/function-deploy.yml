@@ -58,6 +58,22 @@ jobs:
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
 
+      - name: "Resolve Frontend Project Dependencies Using Npm"
+        shell: bash
+        working-directory: "./frontend"
+        run: |
+          npm install
+          npm run test
+          npm run build
+
+      - name: "Upload Web App To Blob Storage"
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            cd ./frontend/build
+            az storage blob upload-batch --account-name ${{ steps.infradeploy.outputs.spaStorageAccountName }}  --auth-mode key -d '$web' -s .
+
       # Azure logout
       - name: logout
         run: |
