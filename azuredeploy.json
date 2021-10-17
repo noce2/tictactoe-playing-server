@@ -204,7 +204,7 @@
       "value": "[variables('spaStorageAccountName')]"
     },
     "spaWebAddress": {
-      "type": "object",
+      "type": "string",
       "value": "[reference(variables('spaStorageAccountName')).primaryEndpoints.web]"
     }
   }
