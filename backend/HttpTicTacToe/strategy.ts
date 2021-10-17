@@ -31,6 +31,12 @@ export function getServerMove(board: Board): MovePosition | null {
     return serversForkMove.move;
   }
 
+  // 4. Attempt to block a fork
+  // const playersForkMove = canEntityCreateFork(board, "player");
+  // if (playersForkMove.boolean) {
+  //   return playersForkMove.move;
+  // }
+
   // 5. Center
   if (board.canMoveBeMade(4)) {
     return 4;
