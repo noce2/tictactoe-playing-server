@@ -39,8 +39,8 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: ${{ env.ResourceGroupName }}
-          template: ./backend/azuredeploy.json
-          parameters: ./backend/azuredeploy.parameters.json
+          template: ./azuredeploy.json
+          parameters: ./azuredeploy.parameters.json
 
       - name: "Resolve Backend Project Dependencies Using Npm"
         shell: bash
