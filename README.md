@@ -25,7 +25,7 @@ The server implements the optimal play algorithm from [Wikipedia](https://en.wik
 
 ### Local
 
-1. `npm start`
+1. `cd backend && npm start`
 2. `curl http://localhost:7071/api/HttpTicTacToe?board=x++++++++`
 
 ### Deployed
